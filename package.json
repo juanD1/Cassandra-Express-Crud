@@ -1,8 +1,7 @@
 {
   "name": "cassandra-express-crud",
   "version": "1.0.0",
-	"main": "index.js",
-	"repository": "https://github.com/juanD1/Cassandra-Express-Crud.git",
+	"main": "index.js",	
   "author": "JuanD1 <juandacor@outlook.com>",
   "license": "MIT"
 }
