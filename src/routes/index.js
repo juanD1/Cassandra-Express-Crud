@@ -54,7 +54,7 @@ router.get('/task/:id', (req, res) => {
 			console.log(err)
 		})		
 })
-//Load task for edit
+//Load task for after edit
 router.get('/edit/:id', (req, res) => {
 	let id = req.params.id
 	let body = req.body
