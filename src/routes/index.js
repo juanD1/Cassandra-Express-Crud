@@ -1,15 +1,20 @@
+//Dependencies
 const express = require('express')
 const router = express.Router()
+const cassandra = require('cassandra-driver')
 
-// const model = require('../model/task')()
-// const ObjectId = (require('mongoose').Types.ObjectId);
-
+//Conect to the clustes
+const client = new cassandra.Client({contactPoints:['127.0.0.1'], keyspace: 'crud_example'})
 
 router.get('/', (req, res) => {
-	res.render('index', {
-		title: 'CRUD With Cassandra',			
-		tasks: []
-	})			
+	client.execute('SELECT * FROM tasks')
+		.then((tasks) => {			
+			// res.json(tasks.rows)			
+			res.render('index', {
+				title: 'CRUD With Cassandra',
+				tasks: tasks.rows			
+			})			
+		})
 })
 
 // router.get('/', (req, res) => {
