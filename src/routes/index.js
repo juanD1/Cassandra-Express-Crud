@@ -15,41 +15,44 @@ router.get('/', (req, res) => {
 				tasks: tasks.rows			
 			})			
 		})
+		.catch((err) => {
+			console.log(err)
+		})
 })
 
-// router.get('/', (req, res) => {
-// 	model.find({}, (err, tasks) => {		
-// 		if (err) throw err		
-// 		res.render('index', {
-// 			title: 'CRUD',			
-// 			tasks: [tasks]
-// 		})		
-// 	})
-// })
+router.post('/add', (req, res) => {
+	let id = cassandra.types.uuid()
+	let body = req.body
+	body.status = false
 
-// router.post('/add', (req, res) => {
-// 	let body = req.body
-// 	body.status = false
+	client.execute('INSERT INTO tasks (id, title, description, status) VALUES (?,?,?,?)',
+		[id, body.title, body.description, body.status])
+		.then(() => {
+			res.redirect('/')
+		})
+		.catch((err) => {
+			console.log(err)
+		})	
+})
 
-// 	model.create(body, (err, tasks) => {
-// 		if(err) throw err
-// 		res.redirect('/')
-// 	})
-// })
-
-// router.get('/task/:id', (req, res) => {
-// 	let id = req.params.id
-// 	model.findById(id)
-// 		.then((task) => {
-// 			// res.json(task)
-// 			task.status = !task.status
-// 			task.save()
-// 			res.redirect('/')
-// 		})
-// 		.catch((err) => {
-// 			console.log(err)
-// 		})		
-// })
+router.get('/task/:id', (req, res) => {	
+	let id = req.params.id
+	client.execute('SELECT * FROM tasks WHERE id = ?', [id])
+		.then((task) => {			
+			let status = task.rows[0].status					
+			status = !status
+			client.execute('UPDATE tasks SET status = ? WHERE id = ?', [status, id])
+			.then(() => {
+				res.redirect('/')
+			})
+			.catch((err) => {
+				console.log(err)
+			})	
+		})
+		.catch((err) => {
+			console.log(err)
+		})		
+})
 
 
 // router.get('/edit/:id', (req, res) => {

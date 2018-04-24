@@ -40,7 +40,7 @@ html(lang="en")
 								td 
 									h5(style= task.status ? 'color: green; text-decoration: line-through' : 'color: black') #{task.description}
 								td
-									- let id = task._id
+									- let id = task.id
 									- let title = task.title						
 									a(class= task.status ? 'btn btn-success' : 'btn btn-dark' href='/task/'+id) Done
 									|									

@@ -12,7 +12,7 @@ html(lang="en")
 			h1= title
 			//- FORM
 			div
-				- let id = task._id
+				- let id = task.id
 				form(action='/update/'+id method='post')
 					legend Edit the task
 						div(class='form-group')
