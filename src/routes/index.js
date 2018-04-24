@@ -69,28 +69,29 @@ router.get('/edit/:id', (req, res) => {
 		console.log(err)
 	})
 })
-
-// router.post('/update/:id', (req, res) => {
-// 	let id = req.params.id
-// 	let body = req.body
-// 	model.findByIdAndUpdate(id, body)
-// 	.then(() => {				
-// 		res.redirect('/')
-// 	})
-// 	.catch((err) => {
-// 		console.log(err)
-// 	})		
-// })
-
-// router.get('/delete/:id', (req, res) => {
-// 	let id = req.params.id
-// 	model.remove({_id: id})
-// 		.then((task) =>{
-// 			res.redirect('/')
-// 		})
-// 		.catch((err) => {
-// 			console.log(err)
-// 		})
-// })
+//Edit task
+router.post('/update/:id', (req, res) => {
+	let id = req.params.id
+	let body = req.body
+	client.execute('UPDATE tasks SET title = ?, description = ? WHERE id = ?',
+	[body.title, body.description, id])
+	.then(() => {				
+		res.redirect('/')
+	})
+	.catch((err) => {
+		console.log(err)
+	})		
+})
+//Delete task
+router.get('/delete/:id', (req, res) => {
+	let id = req.params.id
+	client.execute('DELETE FROM tasks WHERE id = ?', [id])
+		.then((task) =>{
+			res.redirect('/')
+		})
+		.catch((err) => {
+			console.log(err)
+		})
+})
 
 module.exports = router
