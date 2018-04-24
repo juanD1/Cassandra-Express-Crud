@@ -6,6 +6,7 @@ const cassandra = require('cassandra-driver')
 //Conect to the clustes
 const client = new cassandra.Client({contactPoints:['127.0.0.1'], keyspace: 'crud_example'})
 
+//Load all tasks
 router.get('/', (req, res) => {
 	client.execute('SELECT * FROM tasks')
 		.then((tasks) => {			
@@ -19,7 +20,7 @@ router.get('/', (req, res) => {
 			console.log(err)
 		})
 })
-
+//Add task
 router.post('/add', (req, res) => {
 	let id = cassandra.types.uuid()
 	let body = req.body
@@ -34,7 +35,7 @@ router.post('/add', (req, res) => {
 			console.log(err)
 		})	
 })
-
+//Edit state of task
 router.get('/task/:id', (req, res) => {	
 	let id = req.params.id
 	client.execute('SELECT * FROM tasks WHERE id = ?', [id])
@@ -53,22 +54,21 @@ router.get('/task/:id', (req, res) => {
 			console.log(err)
 		})		
 })
-
-
-// router.get('/edit/:id', (req, res) => {
-// 	let id = req.params.id
-// 	let body = req.body
-// 	model.findById(id)
-// 	.then((task) => {
-// 		res.render('edit', {
-// 			title: 'CRUD',
-// 			task: task
-// 		})
-// 	})			
-// 	.catch((err) => {
-// 		console.log(err)
-// 	})
-// })
+//Load task for edit
+router.get('/edit/:id', (req, res) => {
+	let id = req.params.id
+	let body = req.body
+	client.execute('SELECT * FROM tasks WHERE id = ?', [id])	
+	.then((task) => {
+		res.render('edit', {
+			title: 'CRUD',
+			task: task.rows[0]
+		})
+	})			
+	.catch((err) => {
+		console.log(err)
+	})
+})
 
 // router.post('/update/:id', (req, res) => {
 // 	let id = req.params.id
