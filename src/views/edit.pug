@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible", content="ie=edge")
+		link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous")
+		title= title
+	body
+		div(class='container')
+			div(class='row')
+			h1= title
+			//- FORM
+			div
+				- let id = task._id
+				form(action='/update/'+id method='post')
+					legend Edit the task
+						div(class='form-group')
+							input(class='form-control' type='text' id='title' name='title' placeholder='Title' value=task.title)
+						div(class='form-group')
+							textarea( class='form-control' name="description" rows='1' cols="80" placeholder='Add a description') #{task.description}
+					button(class='btn btn-warning' style='color: white; margin: 5px') Update
+					a(class='btn btn-primary' href='/') Cancel				

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible", content="ie=edge")
+		link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous")
+		title= title
+	body
+		div(class='container')
+			div(class='row')
+			h1= title
+			//- FORM
+			div
+				form(action='/add' method='post')
+					legend Add a task
+						div(class='form-group')
+							input(class='form-control' type='text' id='title' name='title' placeholder='Title')
+						div(class='form-group')
+							textarea( class='form-control' name="description" rows='1' cols="80" placeholder='Add a description')
+						button(class='btn btn-primary') Add
+			//- LIST
+			div
+				table(class='table table-bordered table-hover')
+					thead
+						tr
+							th #
+							th Title
+							th Description
+							th Operation
+					tbody
+						- let i = 0
+						each task in tasks							
+							tr
+								td
+									- i++
+									h5(style= task.status ? 'color: green; text-decoration: line-through' : 'color: black') #{i}
+								td 								
+									h5(style= task.status ? 'color: green; text-decoration: line-through' : 'color: black') #{task.title}			
+								td 
+									h5(style= task.status ? 'color: green; text-decoration: line-through' : 'color: black') #{task.description}
+								td
+									- let id = task._id
+									- let title = task.title						
+									a(class= task.status ? 'btn btn-success' : 'btn btn-dark' href='/task/'+id) Done
+									|									
+									a(class='btn btn-warning' style='color: white' href='/edit/'+id) Edit
+									|									
+									a(class="btn btn-danger" href='/delete/'+id) Delete									
+	script.
+		document.getElementById('title').focus()					
